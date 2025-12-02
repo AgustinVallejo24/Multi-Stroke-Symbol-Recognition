@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using TMPro;
+using Delegates;
 public class ZernikeRecognizer
 {
     private bool rotationSensitivity;
@@ -104,7 +105,8 @@ out double closestMismatchDist, out double closesetMismatchDistributionDist)
     double minDistance,
     float distributionDiff,
     ReferenceSymbolGroup closestMismatch,
-    double closestMismatchDist, double closesetMismatchDistributionDist)
+    double closestMismatchDist, double closesetMismatchDistributionDist,
+    RecognitionAction recognitionAction)
     {
         Debug.Log(bestMatch.symbolName);
         if (bestMatch.symbols != null)

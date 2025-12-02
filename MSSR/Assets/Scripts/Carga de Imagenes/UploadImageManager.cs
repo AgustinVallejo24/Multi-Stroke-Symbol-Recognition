@@ -60,7 +60,7 @@ public class UploadImageManager : MonoBehaviour
             GetImageTexture();
             GetName();
 
-            if(ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json")).Where( x => string.Equals(x.symbolName, _symbolName, StringComparison.OrdinalIgnoreCase)).Any())
+            if(ReferenceSymbolStorage.LoadSymbols().Where( x => string.Equals(x.symbolName, _symbolName, StringComparison.OrdinalIgnoreCase)).Any())
             {
                 SaveExistentSymbol();
                 StartCoroutine(ExistentTemplate());
@@ -138,9 +138,9 @@ public class UploadImageManager : MonoBehaviour
 
             symbolGroup.symbols.Add(newSymbol);
 
-            var refrenceSymGroupList = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+            var refrenceSymGroupList = ReferenceSymbolStorage.LoadSymbols();
             refrenceSymGroupList.Add(symbolGroup);
-            ReferenceSymbolStorage.SaveSymbols(refrenceSymGroupList, Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+            ReferenceSymbolStorage.SaveSymbols(refrenceSymGroupList);
         
 
             uploadedImage.texture = null;
@@ -158,7 +158,7 @@ public class UploadImageManager : MonoBehaviour
     
     public void SaveExistentSymbol()
     {
-        ReferenceSymbolGroup symbolGroup = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"))
+        ReferenceSymbolGroup symbolGroup = ReferenceSymbolStorage.LoadSymbols()
             .Where(x => string.Equals(x.symbolName, _symbolName, StringComparison.OrdinalIgnoreCase)).First();        
 
         ReferenceSymbol newSymbol = new ReferenceSymbol(symbolGroup.symbolName, default, default, symbolGroup.strokes, Guid.NewGuid().ToString());
@@ -188,9 +188,9 @@ public class UploadImageManager : MonoBehaviour
 
         symbolGroup.symbols.Add(newSymbol);
 
-        var refrenceSymGroupList = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        var refrenceSymGroupList = ReferenceSymbolStorage.LoadSymbols();
         refrenceSymGroupList.Add(symbolGroup);
-        ReferenceSymbolStorage.SaveSymbols(refrenceSymGroupList, Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        ReferenceSymbolStorage.SaveSymbols(refrenceSymGroupList);
 
         uploadedImage.texture = null;
         _symbolNameF.text = "";

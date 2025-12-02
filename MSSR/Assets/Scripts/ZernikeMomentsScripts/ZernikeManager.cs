@@ -9,13 +9,13 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using System.Runtime.InteropServices;
+using Delegates;
 public class ZernikeManager : MonoBehaviour
 {
 
 
     [Header("Manager configuration")]
     public bool rotationSensitivity;
-    public bool shouldLoad;
 
     public List<ReferenceSymbolGroup> referenceSymbolsList;
 
@@ -26,7 +26,6 @@ public class ZernikeManager : MonoBehaviour
     public GameObject UIDibujo;
     public GameObject drawer;
        
-    string jsonPath;
 
     [HideInInspector]
     public ZernikeProcessor processor;
@@ -36,6 +35,7 @@ public class ZernikeManager : MonoBehaviour
     public int imageSize = 64;
     [HideInInspector]
     public int maxMomentOrder = 10;
+    public RecognitionAction recognitionAction;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
@@ -45,37 +45,31 @@ public class ZernikeManager : MonoBehaviour
     void Start()
     {
        
-        jsonPath = Path.Combine(Application.persistentDataPath,"Saves", "symbols.json");
+     
     
         processor = new ZernikeProcessor(imageSize);
         recognizer = new ZernikeRecognizer(rotationSensitivity,text,processor);
 
-        if (PlayerPrefs.HasKey("shouldLoad"))
+        if (!ReferenceSymbolStorage.JsonExistsInResources())
         {
-            shouldLoad = false;
-        }
-
-
-        if (SceneManager.GetActiveScene().name == "Menu" && shouldLoad)
-        {
-            Debug.LogError("COMPUTEEEEEE");
+            Debug.Log("Loading Symbols");
             StartCoroutine(Compute());
             PlayerPrefs.SetInt("shouldLoad", 1);
-  
+
         }
-        else if(SceneManager.GetActiveScene().name != "Menu")
+        else
         {
             referenceSymbolsList.Clear();
-            referenceSymbolsList = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json")).ToList();            
+            referenceSymbolsList = ReferenceSymbolStorage.LoadSymbols().ToList();            
             UICarga.SetActive(false);
             UIDibujo.SetActive(true);
-            drawer.SetActive(true);
+            if (drawer)
+            {
+                drawer.SetActive(true);
+            }
+            
         }
-        else 
-        {
-            UICarga.SetActive(false);
-            UIDibujo.SetActive(true);
-        }
+
     }
 
 
@@ -87,9 +81,13 @@ public class ZernikeManager : MonoBehaviour
         }
     }
 
+    public void OnSymbolRecognize(string symbolName)
+    {
+        recognitionAction?.Invoke(symbolName);
+    }
     public void SaveSymbolList()
     {
-        ReferenceSymbolStorage.SaveSymbols(referenceSymbolsList, jsonPath);
+        ReferenceSymbolStorage.SaveSymbols(referenceSymbolsList);
     }
     IEnumerator Compute()
     {
@@ -137,7 +135,7 @@ public class ZernikeManager : MonoBehaviour
         UICarga.SetActive(false);
         UIDibujo.SetActive(true);
         yield return new WaitForSeconds(.2f);
-        ReferenceSymbolStorage.SaveSymbols(referenceSymbolsList, jsonPath);
+        ReferenceSymbolStorage.SaveSymbols(referenceSymbolsList);
 
     }
     public void OnDrawingFinished(List<List<Vector2>> finishedPoints, int strokeQuantity)
@@ -188,7 +186,7 @@ public class ZernikeManager : MonoBehaviour
         recognizer.FindBestCandidate(playerMagnitudes, playerDrawDistribution, relevantSymbols, out ReferenceSymbolGroup bestMatch,
             out double minDistance, out float bestDistributionDiff, out ReferenceSymbolGroup closestMismatch, out double closestMismatchDist, out double closesetMismatchDistributionDist);
 
-        recognizer.DisplayResult(bestMatch, minDistance, bestDistributionDiff, closestMismatch, closestMismatchDist, closesetMismatchDistributionDist);
+        recognizer.DisplayResult(bestMatch, minDistance, bestDistributionDiff, closestMismatch, closestMismatchDist, closesetMismatchDistributionDist, OnSymbolRecognize);
     }
 
 

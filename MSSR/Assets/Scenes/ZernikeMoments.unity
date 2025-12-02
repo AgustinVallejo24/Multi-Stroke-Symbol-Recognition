@@ -185,7 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSensitivity: 1
-  shouldLoad: 0
   referenceSymbolsList: []
   text: {fileID: 1665389698}
   UICarga: {fileID: 370495669}

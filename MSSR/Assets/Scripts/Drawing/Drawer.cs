@@ -4,6 +4,7 @@ using TMPro;
 using System.Linq;
 using System.Collections;
 using System;
+using System.Diagnostics;
 public class Drawer : MonoBehaviour
 {
   
@@ -40,6 +41,7 @@ public class Drawer : MonoBehaviour
    
         if (Input.GetMouseButtonDown(0))
         {
+           
            
             if (IsPointerOverUI())
                 return;
@@ -208,9 +210,12 @@ public class Drawer : MonoBehaviour
                 }
                 normalizedPositions = normalizedPositions.Skip(_strokesPointsCount[i]).ToList();
             }
-    
-         
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             zRecognizer.OnDrawingFinished(listaDeListas, _lineRenderers.Count -1);
+            sw.Stop();
+            UnityEngine.Debug.Log("Total recognition time: " + sw.ElapsedMilliseconds + " ms");
             currentPoints.Clear();
             _strokesPointsCount.Clear();
             foreach (var item in listaDeListas)

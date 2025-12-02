@@ -19,7 +19,7 @@ public class ConfigurationSceneManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        var referenceSymbols = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json")).ToList();
+        var referenceSymbols = ReferenceSymbolStorage.LoadSymbols().ToList();
         _symbolList = referenceSymbols;
         foreach (var item in referenceSymbols)
         {
@@ -83,7 +83,7 @@ public class ConfigurationSceneManager : MonoBehaviour
             currentGroup.orientationThreshold = _symbolConfigList[i].GetRotationThresholdSliderValue();
             _symbolList[i] = currentGroup;
         }
-        ReferenceSymbolStorage.SaveSymbols(_symbolList, Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        ReferenceSymbolStorage.SaveSymbols(_symbolList);
 
     }
 

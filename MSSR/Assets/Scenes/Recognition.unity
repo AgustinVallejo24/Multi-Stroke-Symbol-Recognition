@@ -264,6 +264,74 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].strokes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].strokes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].Threshold
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].Threshold
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].symbolName
+      value: Cuadrado
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].symbolName
+      value: Circulo
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].useRotation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].useRotation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].symbols.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].symbols.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].orientationThreshold
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].orientationThreshold
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].symbols.Array.data[0].symbolName
+      value: Cuadrado
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].symbols.Array.data[0].symbolName
+      value: Circulo
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[0].symbols.Array.data[0].templateTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 671bd6ee381e12e45820f8e9a312f6d2, type: 3}
+    - target: {fileID: 2230642387212648161, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
+      propertyPath: referenceSymbolsList.Array.data[1].symbols.Array.data[0].templateTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 7e89d3459617602479251a10e2ccdb1b, type: 3}
     - target: {fileID: 2645727711719383865, guid: 6fd8e521a338b124cbc75580f6af6888, type: 3}
       propertyPath: m_LocalPosition.x
       value: 616.10913

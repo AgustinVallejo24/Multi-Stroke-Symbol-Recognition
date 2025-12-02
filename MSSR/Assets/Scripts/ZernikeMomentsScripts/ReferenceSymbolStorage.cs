@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using System.Runtime.InteropServices;
-
+using UnityEditor;
 public static class ReferenceSymbolStorage
 {
     [Serializable]
@@ -18,13 +18,14 @@ public static class ReferenceSymbolStorage
 
     private static readonly string FOLDER = "Saves";
     private static readonly string FILENAME = "symbols.json";
+    private const string FILENAME_NO_EXTENSION = "symbols";
 
     [DllImport("__Internal")]
     private static extern void SyncFilesystem();
 
     private static string GetFilePath()
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, FOLDER);
+        string directoryPath = Application.dataPath + "/Resources";
         // Asegurar que la carpeta exista antes de intentar cualquier I/O
         try { Directory.CreateDirectory(directoryPath); }
         catch (IOException) { /* Ignorar si ya existe */ }
@@ -35,7 +36,7 @@ public static class ReferenceSymbolStorage
     // ----------------------------------------------------------------------------------
     //  FUNCIÓN DE GUARDADO (Ahora simplificada)
     // ----------------------------------------------------------------------------------
-    public static void SaveSymbols(List<ReferenceSymbolGroup> symbols, string path)
+    public static void SaveSymbols(List<ReferenceSymbolGroup> symbols)
     {
         string filePath = GetFilePath();
 
@@ -46,51 +47,31 @@ public static class ReferenceSymbolStorage
         File.WriteAllText(filePath, json);
 
         // SINCRONIZACIÓN OBLIGATORIA
-#if UNITY_WEBGL && !UNITY_EDITOR
-            SyncFilesystem();
-            Debug.Log("Símbolos guardados y sincronizados en WebGL: " + filePath);
-#else
-        Debug.Log("Símbolos guardados en Editor: " + filePath);
+#if UNITY_EDITOR
+        AssetDatabase.Refresh();
 #endif
+
     }
 
     // ----------------------------------------------------------------------------------
     //  FUNCIÓN DE CARGA/CREACIÓN (El reemplazo del File.Exists)
     // ----------------------------------------------------------------------------------
-    public static List<ReferenceSymbolGroup> LoadSymbols(string path)
+    public static List<ReferenceSymbolGroup> LoadSymbols()
     {
-        string filePath = GetFilePath();
-        string json = null;
+        // Intentar cargar el JSON desde Resources
+        TextAsset textAsset = Resources.Load<TextAsset>(FILENAME_NO_EXTENSION);
 
-        // 1. Intentar leer el archivo para verificar existencia
-        try
+        if (textAsset == null)
         {
-            json = File.ReadAllText(filePath);
-            Debug.Log("Símbolos cargados exitosamente.");
-        }
-        catch (FileNotFoundException)
-        {
-            // 2. Si no existe, crear el archivo por defecto y sincronizar
-            Debug.LogWarning($"Archivo {FILENAME} no encontrado. Creando archivo por defecto.");
-
-            json = DEFAULT_JSON_CONTENT;
-            File.WriteAllText(filePath, json);
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-                SyncFilesystem(); // Sincroniza la creación
-#endif
-        }
-        catch (Exception ex)
-        {
-            // 3. Manejar otros errores graves
-            Debug.LogError($"Error al leer el archivo. Usando datos por defecto: {ex.Message}");
+            Debug.LogError($"No se encontró el archivo {FILENAME} en Resources.");
             return new List<ReferenceSymbolGroup>();
         }
 
-        // 4. Deserialización
+        string json = textAsset.text;
+
         if (string.IsNullOrEmpty(json))
         {
-            Debug.LogError("Contenido JSON vacío. Usando lista vacía.");
+            Debug.LogError("El archivo JSON está vacío.");
             return new List<ReferenceSymbolGroup>();
         }
 
@@ -101,7 +82,7 @@ public static class ReferenceSymbolStorage
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Error al deserializar JSON: {ex.Message}. Usando lista vacía.");
+            Debug.LogError($"Error al deserializar JSON: {ex.Message}");
             return new List<ReferenceSymbolGroup>();
         }
     }
@@ -112,7 +93,7 @@ public static class ReferenceSymbolStorage
     public static void AppendSymbol(ReferenceSymbol newSymbol)
     {
         // 1. Cargar el JSON (que lo crea si no existe)
-        List<ReferenceSymbolGroup> current = LoadSymbols("a");
+        List<ReferenceSymbolGroup> current = LoadSymbols();
 
         // 2. Lógica de modificación (Mantenida sin cambios)
         ReferenceSymbolGroup existingGroup = current.FirstOrDefault(x => string.Equals(x.symbolName, newSymbol.symbolName, StringComparison.OrdinalIgnoreCase));
@@ -132,10 +113,15 @@ public static class ReferenceSymbolStorage
         }
 
         // 3. Guardar el contenido modificado
-        SaveSymbols(current,"A");
+        SaveSymbols(current);
         Debug.Log("Appended symbol: " + newSymbol.symbolName);
     }
 
+    public static bool JsonExistsInResources()
+    {
+        TextAsset asset = Resources.Load<TextAsset>(FILENAME_NO_EXTENSION);
+        return asset != null;
+    }
     // NOTAS: Las funciones LoadFromResources y LoadSymbols(string path) original se han fusionado o eliminado por simplicidad.
     // La función LoadOrCreateJson fue ELIMINADA y su lógica integrada en LoadSymbols.
 }

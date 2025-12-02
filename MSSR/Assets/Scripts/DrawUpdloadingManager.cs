@@ -68,7 +68,7 @@ public class DrawUpdloadingManager : MonoBehaviour
 
     public bool DoesSymbolExist(string name)
     {
-        return ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json")).Where(x => string.Equals(x.symbolName, name, System.StringComparison.OrdinalIgnoreCase)).Count() > 0;
+        return ReferenceSymbolStorage.LoadSymbols().Where(x => string.Equals(x.symbolName, name, System.StringComparison.OrdinalIgnoreCase)).Count() > 0;
     }
     
     public void OpenSymbolConfiguration()
@@ -123,10 +123,10 @@ public class DrawUpdloadingManager : MonoBehaviour
         string symbolID = Guid.NewGuid().ToString();
         ImageUtils.SaveTextureToPNG(symbolConfig.GetTexture(), symbolID);
         _currentSymbol.symbolID = symbolID;
-        var symbolList = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        var symbolList = ReferenceSymbolStorage.LoadSymbols();
         symbolList.Add(newGroup);
 
-        ReferenceSymbolStorage.SaveSymbols(symbolList, Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        ReferenceSymbolStorage.SaveSymbols(symbolList);
        // ReferenceSymbolStorage.AppendSymbol(_currentSymbol, Path.Combine(Application.persistentDataPath, "Saves", "drawnSymbols.json"));
         yield return new WaitForSeconds(.1f);
         Destroy(_currentSymbolConfigurer.gameObject);
@@ -146,11 +146,11 @@ public class DrawUpdloadingManager : MonoBehaviour
         string symbolID = Guid.NewGuid().ToString();
         ImageUtils.SaveTextureToPNG(ImageUtils.GetTexture2DCopy(renderTexture), symbolID);
         _currentSymbol.symbolID = symbolID;
-        var symbolList = ReferenceSymbolStorage.LoadSymbols(Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        var symbolList = ReferenceSymbolStorage.LoadSymbols();
         var filtered = symbolList.Where(x => string.Equals(x.symbolName, _currentSymbol.symbolName, System.StringComparison.OrdinalIgnoreCase)).ToList();
         filtered[0].symbols.Add(_currentSymbol);
 
-        ReferenceSymbolStorage.SaveSymbols(symbolList, Path.Combine(Application.persistentDataPath, "Saves", "symbols.json"));
+        ReferenceSymbolStorage.SaveSymbols(symbolList);
         yield return new WaitForSeconds(.1f);
         _drawingTest.ClearAllLineRenderers(true);
 

@@ -20,7 +20,7 @@ public static class DrawNormalizer
     {
         Rect box = BoundingBox(points);
         float scale = size / Mathf.Max(box.width, box.height);
-        List<Vector2> newPoints = new();
+        List<Vector2> newPoints = new List<Vector2>();
 
         foreach (var p in points)
         {
@@ -35,7 +35,7 @@ public static class DrawNormalizer
     public static List<Vector2> TranslateToOrigin(List<Vector2> points)
     {
         Vector2 centroid = Centroid(points);
-        List<Vector2> newPoints = new();
+        List<Vector2> newPoints = new List<Vector2>();
         foreach (var p in points)
             newPoints.Add(p - centroid);
         return newPoints;

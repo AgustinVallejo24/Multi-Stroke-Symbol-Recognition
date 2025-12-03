@@ -18,7 +18,7 @@ PluginImporter:
         AndroidSharedLibraryType: Executable
         CPU: ARMv7
     Any:
-      enabled: 0
+      enabled: 1
       settings:
         Exclude Android: 1
         Exclude Editor: 0
@@ -28,7 +28,7 @@ PluginImporter:
         Exclude OSXIntel: 1
         Exclude OSXIntel64: 1
         Exclude OSXUniversal: 0
-        Exclude WebGL: 1
+        Exclude WebGL: 0
         Exclude Win: 0
         Exclude Win64: 0
         Exclude iOS: 1
@@ -47,7 +47,7 @@ PluginImporter:
       settings:
         CPU: None
     WebGL:
-      enabled: 0
+      enabled: 1
       settings: {}
     Win:
       enabled: 1

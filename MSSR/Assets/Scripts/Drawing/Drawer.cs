@@ -16,8 +16,8 @@ public class Drawer : MonoBehaviour
     public ZernikeManager zRecognizer;
    
     private Camera cam;
-    private List<Vector2> currentPoints = new();
-    private List<Vector2> currentStrokePoints = new();
+    private List<Vector2> currentPoints = new List<Vector2>();
+    private List<Vector2> currentStrokePoints = new List<Vector2>();
     private bool isDrawing = false;
 
     private List<LineRenderer> _lineRenderers = new List<LineRenderer>(0);
@@ -211,11 +211,7 @@ public class Drawer : MonoBehaviour
                 normalizedPositions = normalizedPositions.Skip(_strokesPointsCount[i]).ToList();
             }
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            zRecognizer.OnDrawingFinished(listaDeListas, _lineRenderers.Count -1);
-            sw.Stop();
-            UnityEngine.Debug.Log("Total recognition time: " + sw.ElapsedMilliseconds + " ms");
+            zRecognizer.OnDrawingFinished(listaDeListas, _lineRenderers.Count -1);;
             currentPoints.Clear();
             _strokesPointsCount.Clear();
             foreach (var item in listaDeListas)

@@ -15,8 +15,7 @@ public static class ReferenceSymbolStorage
 
     // JSON por defecto para crear el archivo si no existe
     private static readonly string DEFAULT_JSON_CONTENT = JsonUtility.ToJson(new ReferenceSymbolWrapper { symbols = new List<ReferenceSymbolGroup>() }, true);
-
-    private static readonly string FOLDER = "Saves";
+    
     private static readonly string FILENAME = "symbols.json";
     private const string FILENAME_NO_EXTENSION = "symbols";
 
